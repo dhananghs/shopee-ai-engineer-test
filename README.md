@@ -17,6 +17,10 @@ part2-coding/
 Each folder has its own README with the reasoning and how to run it. Start
 there - this page is only the map.
 
+Question 5 running, from uploading a receipt photo to asking about the spending:
+
+https://github.com/user-attachments/assets/db868b49-e4d5-4824-9ec7-fdd629f9d0f7
+
 ## Getting set up
 
 Python 3.11, and Docker for questions 4 and 5.
