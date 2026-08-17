@@ -6,6 +6,10 @@ database, and then you can ask questions about your spending in plain language.
 The AI is used for the two things only a model can do - reading a photo, and
 understanding a question. Everything in between is ordinary Django code.
 
+## Demo
+
+https://github.com/user-attachments/assets/db868b49-e4d5-4824-9ec7-fdd629f9d0f7
+
 ## Running it
 
 Question 4's postgres container is the database for this app too, so start it
