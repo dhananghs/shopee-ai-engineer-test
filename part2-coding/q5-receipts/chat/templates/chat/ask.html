@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="box">
+    <h2>Ask about your receipts</h2>
+    <form method="post">
+        {% csrf_token %}
+        <p>
+            <input type="text" name="question" size="60" required
+                   placeholder="What food did I buy yesterday?">
+        </p>
+        <button type="submit">Ask</button>
+    </form>
+    <p class="muted">
+        Try: "What food did I buy yesterday?" &middot;
+        "Give me total expenses for food on 20 June" &middot;
+        "Where did I buy hamburger from last 7 days?"
+    </p>
+</div>
+
+{% for q in questions %}
+<div class="box">
+    <p><strong>{{ q.question }}</strong></p>
+    <p>{{ q.answer|linebreaksbr }}</p>
+    <p class="muted">{{ q.asked_at }}</p>
+</div>
+{% endfor %}
+{% endblock %}

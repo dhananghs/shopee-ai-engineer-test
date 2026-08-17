@@ -1,0 +1,22 @@
+# .env holds a real api key. it is passed in at run time by docker-compose
+# instead, so it must never be baked into a layer - an image can be pushed to
+# a registry and the key would go with it.
+.env
+
+# receipt photos are not meant to be kept at all, and the debug folder is the
+# one place they can land. never copy them into an image.
+media/
+
+__pycache__/
+*.py[cod]
+*.egg-info/
+venv/
+.venv/
+
+db.sqlite3
+staticfiles/
+
+.git/
+.gitignore
+.DS_Store
+README.md

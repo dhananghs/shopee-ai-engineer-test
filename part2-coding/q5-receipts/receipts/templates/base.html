@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Receipt Reader{% endblock %}</title>
+    <style>
+        body {
+            font-family: -apple-system, "Segoe UI", Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f7f7f8;
+            color: #222;
+        }
+        header {
+            border-bottom: 2px solid #ddd;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+        }
+        header a {
+            margin-right: 16px;
+            text-decoration: none;
+            color: #444;
+            font-weight: bold;
+        }
+        header a:hover { color: #000; }
+        .box {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 18px;
+            margin-bottom: 18px;
+        }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid #eee; }
+        th { background: #fafafa; }
+        td.num, th.num { text-align: right; }
+        button {
+            background: #2d6cdf;
+            color: #fff;
+            border: 0;
+            border-radius: 4px;
+            padding: 9px 18px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        button:hover { background: #2358b8; }
+        .msg { background: #e8f4e8; border: 1px solid #b6d7b6; padding: 10px; border-radius: 4px; }
+        .msg.error { background: #fdeaea; border-color: #e0b4b4; }
+        .muted { color: #888; }
+        img.receipt { max-width: 100%; border: 1px solid #ddd; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="{% url 'upload' %}">Upload</a>
+        <a href="{% url 'ask' %}">Ask a question</a>
+    </header>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p class="msg {{ message.tags }}">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    {% block content %}{% endblock %}
+</body>
+</html>

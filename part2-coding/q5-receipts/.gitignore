@@ -1,0 +1,22 @@
+# the real environment file with the api key in it
+.env
+
+# python
+__pycache__/
+*.py[cod]
+*.egg-info/
+venv/
+.venv/
+
+# django
+db.sqlite3
+staticfiles/
+
+# receipt photos are not supposed to be kept, but the debug flag can write
+# some here, so make sure they never end up in git
+media/
+
+# editors / os
+.DS_Store
+.idea/
+.vscode/

@@ -1,0 +1,48 @@
+# Runs the receipt reader in a container.
+#
+# There is no database service here on purpose. Question 4 already runs
+# postgres, and the whole reason that question used pgvector instead of a
+# dedicated vector engine was so one server could serve both. Starting a second
+# postgres here would undo that argument.
+#
+#   cd ../q4-vector-db && docker compose up -d      <- do this first
+#   docker compose up --build
+
+# pinned so the project name does not follow the directory name.
+name: shopee-q5
+
+services:
+  web:
+    build: .
+    container_name: shopee-receipts
+    ports:
+      - "8000:8000"
+
+    # the api key and the rest of the settings come from .env, which is not in
+    # the image - see .dockerignore.
+    env_file: .env
+
+    environment:
+      # these two override what .env says, because .env is written for running
+      # on the host. inside docker we reach postgres by its service name on the
+      # internal port; localhost:5433 is only how the host sees it.
+      DB_HOST: vectordb
+      DB_PORT: 5432
+
+      # gunicorn is not a development server, so debug pages are off. django
+      # then enforces ALLOWED_HOSTS for real, which is why it is set here too.
+      DEBUG: "0"
+      ALLOWED_HOSTS: localhost,127.0.0.1,0.0.0.0
+
+    networks:
+      - q4
+
+    restart: unless-stopped
+
+networks:
+  # question 4's network, joined rather than created. "docker compose up" in
+  # ../q4-vector-db makes it; this container just attaches so it can resolve
+  # the "vectordb" hostname.
+  q4:
+    external: true
+    name: shopee-q4_default

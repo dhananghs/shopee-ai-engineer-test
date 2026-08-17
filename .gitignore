@@ -1,0 +1,31 @@
+# --- q1-q3 ---
+# the notebooks are the submission. these are the standalone versions i used to
+# measure memory and wall time without pandas loaded for display.
+analyze_small.py
+analyze_large.py
+
+# --- data ---
+# the source csvs are ~367mb together, they do not belong in git.
+# see part2-coding/q1-q3-customer-csv/README.md for where to get them.
+*.csv
+
+# --- secrets ---
+.env
+
+# --- python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+venv/
+.venv/
+.ipynb_checkpoints/
+
+# --- django (q5) ---
+db.sqlite3
+staticfiles/
+media/
+
+# --- editors / os ---
+.DS_Store
+.idea/
+.vscode/

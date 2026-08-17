@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="box">
+    <h2>{{ receipt.merchant|default:"Receipt not read yet" }}</h2>
+    <p class="muted">Uploaded {{ receipt.uploaded_at }}</p>
+
+    {% if receipt.is_extracted %}
+    <table>
+        <tr><th>Bought on</th><td>{{ receipt.bought_at|default:"-" }}</td></tr>
+        <tr><th>Number of items</th><td>{{ receipt.item_count }}</td></tr>
+        <tr><th>Most expensive item</th><td>{{ receipt.most_expensive_item|default:"-" }}</td></tr>
+        <tr><th>Main category</th><td>{{ receipt.top_category|default:"-" }}</td></tr>
+    </table>
+    {% else %}
+        <p class="muted">This receipt has not been read yet.</p>
+    {% endif %}
+</div>
+
+{% if receipt.is_extracted %}
+<div class="box">
+    <h2>What it cost</h2>
+    <table>
+        <tr><th>Food</th><td class="num">{{ receipt.items_total }}</td></tr>
+        {% if receipt.tax %}<tr><th>Tax</th><td class="num">{{ receipt.tax }}</td></tr>{% endif %}
+        {% if receipt.service_charge %}<tr><th>Service charge</th><td class="num">{{ receipt.service_charge }}</td></tr>{% endif %}
+        {% if receipt.delivery_fee %}<tr><th>Delivery</th><td class="num">{{ receipt.delivery_fee }}</td></tr>{% endif %}
+        {% if receipt.discount %}<tr><th>Discount</th><td class="num">-{{ receipt.discount }}</td></tr>{% endif %}
+        <tr><th><strong>Paid</strong></th><td class="num"><strong>{{ receipt.total }}</strong></td></tr>
+    </table>
+
+    {% if not receipt.adds_up %}
+    <p class="msg error">
+        These do not add up - there is a difference of {{ receipt.difference }}.
+        Something on the receipt was probably missed while reading it.
+    </p>
+    {% endif %}
+</div>
+{% endif %}
+
+{% if receipt.items.all %}
+<div class="box">
+    <h2>What was bought</h2>
+    <table>
+        <tr>
+            <th>Item</th>
+            <th>Category</th>
+            <th class="num">Qty</th>
+            <th class="num">Price</th>
+        </tr>
+        {% for item in receipt.items.all %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.category }}</td>
+            <td class="num">{{ item.quantity }}</td>
+            <td class="num">{{ item.price }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endif %}
+
+<div class="box">
+    <p class="muted">
+        The photo was read once and then thrown away, so only the information
+        above is stored.
+    </p>
+</div>
+{% endblock %}

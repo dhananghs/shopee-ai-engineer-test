@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="box">
+    <h2>Upload a food receipt</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Upload and read it</button>
+    </form>
+</div>
+
+<div class="box">
+    <h2>Receipts so far</h2>
+    {% if receipts %}
+    <table>
+        <tr>
+            <th>Shop</th>
+            <th>Date</th>
+            <th class="num">Items</th>
+            <th class="num">Total</th>
+            <th></th>
+        </tr>
+        {% for receipt in receipts %}
+        <tr>
+            <td>{{ receipt.merchant|default:"(not read yet)" }}</td>
+            <td>{{ receipt.bought_at|default:"-" }}</td>
+            <td class="num">{{ receipt.item_count }}</td>
+            <td class="num">{{ receipt.total|default:"-" }}</td>
+            <td><a href="{% url 'detail' receipt.pk %}">open</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p class="muted">Nothing uploaded yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

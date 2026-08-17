@@ -1,0 +1,33 @@
+# postgres with the pgvector extension already compiled in.
+# i picked this instead of qdrant/chroma because question 5 needs normal
+# sql tables for the receipts anyway, so this way it's one container
+# instead of two databases to keep in sync.
+
+# pinned so the compose project name (and therefore the pgdata volume) does not
+# change if this directory is ever renamed - otherwise the seeded data silently
+# ends up in a new empty volume.
+name: shopee-q4
+
+services:
+  vectordb:
+    image: pgvector/pgvector:pg16
+    container_name: shopee-vectordb
+    environment:
+      POSTGRES_USER: shopee
+      POSTGRES_PASSWORD: shopee
+      POSTGRES_DB: vectors
+    ports:
+      - "5433:5432"        # 5433 on the host so it doesn't fight a local postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    healthcheck:
+      # without this you can connect before postgres finished starting and get
+      # a confusing "database system is starting up" error
+      test: ["CMD-SHELL", "pg_isready -U shopee -d vectors"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  pgdata:
